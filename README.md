@@ -1,4 +1,4 @@
-# MMD-Mosaic
+# MMD-Fake3D
 This Effect is use black box to make 3D feeling.  
 This effect has six parameters X, Y, Rx, Ry, Si, Tr that can be input.  
 X is the number of screen area.  
