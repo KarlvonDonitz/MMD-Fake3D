@@ -10,7 +10,9 @@ float Script : STANDARDSGLOBAL <
 float XValue : CONTROLOBJECT < string name = "(self)"; string item = "X";>;
 float YValue : CONTROLOBJECT < string name = "(self)"; string item = "Y";>;
 float XBais : CONTROLOBJECT < string name = "(self)"; string item = "Rx";>;
+float LRBais : CONTROLOBJECT < string name = "(self)"; string item = "Z";>;
 float Intensity : CONTROLOBJECT < string name = "(self)"; string item = "Si";>;
+float Transparency : CONTROLOBJECT < string name = "(self)"; string item = "Tr";>;
 
 float2 ViewportSize : VIEWPORTPIXELSIZE;
 
@@ -77,12 +79,15 @@ float4 PS_passMain(float2 Tex: TEXCOORD0) : COLOR
 	float YFlag = YValue/ViewportSize.y;
 	float XFlag = (ViewportSize.x/XValue)/ViewportSize.x;
 	float Bais = XBais*10/ViewportSize.x;
+	float Screen_LRBais = LRBais/ViewportSize.x;
+	if (Tex.x<Screen_LRBais || Tex.x>1-Screen_LRBais) Color = float4(0,0,0,1);
 	for ( float i=1;i<XValue;i++) 
 	{
 	if ( Tex.x > i*XFlag-Bais  && Tex.x < i*XFlag+Bais ) Color=float4(0,0,0,1);
 	}
 	if(Tex.y < YFlag || 1-Tex.y < YFlag) Color = float4(0,0,0,1);
 	if (Flag > 0.95 ) Color=TexColor;
+	Color.rgb = Color.rgb * Transparency + TexColor.rgb*(1-Transparency);
 	return Color;
 }
 
